@@ -4,10 +4,10 @@ state("ringracers", "2.0")
 	byte lap : 0x1088444;
 	byte prisonLap : 0x1088445;
 	byte totalLaps : 0x1087795;
-	ushort level : 0xaddff4;
-	int gameState : 0x108f344;
-	bool tutorialComplete : 0x1103de0, 0x70c4;
-	bool inSpecialStage : 0x5c69ba0
+	ushort level : 0xADDFF4;
+	int gameState : 0x108F344;
+	bool tutorialComplete : 0x1103DE0, 0x70C4;
+	bool inSpecialStage : 0x5C69BA0
 }
 state("ringracers", "2.1")
 {
@@ -15,10 +15,10 @@ state("ringracers", "2.1")
 	byte lap : 0x108A444;
 	byte prisonLap : 0x108A445;
 	byte totalLaps : 0x1089795;
-	ushort level : 0xadeff4;
+	ushort level : 0xADEFF4;
 	int gameState : 0x1091344;
-	bool tutorialComplete : 0x1105de0, 0x70c4;
-	bool inSpecialStage : 0x5c6bba0
+	bool tutorialComplete : 0x1105DE0, 0x70C4;
+	bool inSpecialStage : 0x5C6BBA0
 }
 state("ringracers", "2.2")
 {
@@ -28,8 +28,19 @@ state("ringracers", "2.2")
 	byte totalLaps : 0x10F97D5;
 	ushort level : 0xB4CFF4;
 	int gameState : 0x1101484;
-	bool tutorialComplete : 0x1176100, 0x70c4;
-	bool inSpecialStage : 0x5cddee0
+	bool tutorialComplete : 0x1176100, 0x70C4;
+	bool inSpecialStage : 0x5CDDEE0
+}
+state("ringracers", "2.3")
+{
+	uint trackTics : 0x115647C;
+	byte lap : 0x115648C;
+	byte prisonLap : 0x115648D;
+	byte totalLaps : 0x11557D5;
+	ushort level : 0xBA7FF4;
+	int gameState : 0x115D4C4;
+	bool tutorialComplete : 0x11D2140, 0x70C4;
+	bool inSpecialStage : 0x5D39F20
 }
 
 init
@@ -38,6 +49,7 @@ init
 	if (moduleMemorySize == 162025472) version = "2.0";
 	if (moduleMemorySize == 162033664) version = "2.1";
 	if (moduleMemorySize == 162512896) version = "2.2";
+	if (moduleMemorySize == 162881536) version = "2.3";
 
 	refreshRate = 35;
 }
@@ -81,7 +93,6 @@ split
 	//Special stages needs better handling. 
 	//Outrunning the Emerald and finishing causes a split
 	//Occasionally completing a Special Stage successfully does not split. Invisible 'lap' checkpoints can be missed
-	//This has only happened on Emerald 4, Probably flying over the checkpoints with the Tricks there
 	//Cannot find a decent Emerald collected boolean
 	
 	//Split on Race/Special stage complete
