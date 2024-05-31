@@ -65,7 +65,6 @@ bool process_is_open(ProcessId process);
 /// Reads memory from a process at the address given. This will write
 /// the memory to the buffer given. Returns `false` if this fails.
 bool process_read(ProcessId process, Address address, void* buf_ptr, size_t buf_len);
-bool process_list_by_name(char const *name_ptr, size_t name_len, ProcessId* list_ptr, size_t* list_len_ptr);
 /// Gets the address of a module in a process.
 Address process_get_module_address(ProcessId process, char const *name_ptr, size_t name_len);
 /// Gets the size of a module in a process.

@@ -25,6 +25,7 @@ typedef struct {
 } GameState;
 
 uint8_t operatingSystem = 0;
+uint8_t operatingSystemArch = 0;
 ProcessId process = 0;
 Address gameModule = 0;
 GameAddresses* gameAddresses = 0;
@@ -36,9 +37,15 @@ bool inCredits = false;
 
 bool set_os() {
     char os[7];
+    char arch[7];
     size_t os_length = sizeof(os);
+    size_t arch_length = sizeof(arch);
     if (!runtime_get_os(os, &os_length)) {
         runtime_print_message_cstr("Could not get OS");
+        return false;
+    }
+    if (!runtime_get_arch(arch, &arch_length)) {
+        runtime_print_message_cstr("Could not get OS Arch");
         return false;
     }
     if (os[0] == 'w' && os[1] == 'i' && os[2] == 'n' && os[3] == 'd' && os[4] == 'o' && os[5] == 'w' && os[6] == 's') {
@@ -51,14 +58,14 @@ bool set_os() {
     }
     else if (os[0] == 'm' && os[1] == 'a' && os[2] == 'c' && os[3] == 'o' && os[4] == 's') {
         runtime_print_message_cstr("Detected Mac OS");
-        //operatingSystem = 3;
-        //No supported versions for Mac
-        return false;
+        operatingSystem = 3;
     }
     else {
         runtime_print_message_cstr("Could not detect OS");
         return false;
     }
+    if (arch[0] == 'x' && arch[1] == '8' && arch[2] == '6') operatingSystemArch = 1;
+    else operatingSystemArch = 2;
     return true;
 }
 
@@ -107,7 +114,7 @@ void setup(uint16_t gameVersion) {
         gameAddresses->tutorialComplete = 0x11D2140;
         gameAddresses->inSpecialStage = 0x5D39F20;
     }
-    //Linux
+    //Linux x86
     else if (gameVersion == 101) { //2.3
         gameAddresses->trackTics = 0x99A968;
         gameAddresses->lap = 0x99A978;
@@ -117,6 +124,28 @@ void setup(uint16_t gameVersion) {
         gameAddresses->gameState = 0x9A2264;
         gameAddresses->tutorialComplete = 0x0;
         gameAddresses->inSpecialStage = 0x0;
+    }
+    //Mac ARM
+    else if (gameVersion == 201) { //2.3
+        gameAddresses->trackTics = 0xBD7DD8;
+        gameAddresses->lap = 0xBD7DE8;
+        gameAddresses->prisonLap = 0xBD7DE9;
+        gameAddresses->totalLaps = 0xBD7748;
+        gameAddresses->level = 0x988540;
+        gameAddresses->gameState = 0xBD7050;
+        gameAddresses->tutorialComplete = 0xBF0A40;
+        gameAddresses->inSpecialStage = 0x651ED28;
+    }
+    //Mac x86
+    else if (gameVersion == 301) { //2.3
+        gameAddresses->trackTics = 0xCCD93C;
+        gameAddresses->lap = 0xCCD94C;
+        gameAddresses->prisonLap = 0xCCD94D;
+        gameAddresses->totalLaps = 0xCCD2AC;
+        gameAddresses->level = 0xA7DEA0;
+        gameAddresses->gameState = 0xCCCB80;
+        gameAddresses->tutorialComplete = 0xCE6608;
+        gameAddresses->inSpecialStage = 0x66149F8;
     }
     old->trackTics = 0;
     old->lap = 0;
@@ -188,9 +217,28 @@ bool set_process() {
         else if (moduleMemorySize == 162033664) setup(2); //2.1
         else if (moduleMemorySize == 162512896) setup(3); //2.2
         else if (moduleMemorySize == 162881536) setup(4); //2.3
+        else {
+            cleanup();
+            return false;
+        }
     }
     else if (operatingSystem == 2) {
         if (moduleMemorySize == 9293824) setup(101); //2.3
+        else {
+            cleanup();
+            return false;
+        }
+    }
+    else if (operatingSystem == 3) {
+        //Is there some way of getting moduleMemorySize without running the application? In any context not just the autosplitter so i can paste the value here
+        //Or something else I can use that I can grab without running the application
+        //Like the full file size etc
+        //There needs to be some way we can version check something without requiring a Mac to run the program to get a module size
+        if (moduleMemorySize == 178864128) setup(201); //2.3
+        else {
+            cleanup();
+            return false;
+        }
     }
     runtime_set_tick_rate(35);
     totalIGT = 0;
@@ -218,8 +266,20 @@ void update_gamestate() {
         Address tutorialComplete = 0;
         if (!process_read(process, gameModule + gameAddresses->tutorialComplete, &tutorialComplete, sizeof(tutorialComplete))) return;
         if (!process_read(process, tutorialComplete + 0x70C4, &current->tutorialComplete, sizeof(current->tutorialComplete))) return;
+        if (!process_read(process, gameModule + gameAddresses->inSpecialStage, &current->inSpecialStage, sizeof(current->inSpecialStage))) return;
     }
-    if (!process_read(process, gameModule + gameAddresses->inSpecialStage, &current->inSpecialStage, sizeof(current->inSpecialStage))) return;
+    else if (operatingSystem == 3 && operatingSystemArch == 2) { //Mac ARM
+        Address tutorialComplete = 0;
+        if (!process_read(process, gameModule + gameAddresses->tutorialComplete, &tutorialComplete, sizeof(tutorialComplete))) return;
+        if (!process_read(process, tutorialComplete + 0x7108, &current->tutorialComplete, sizeof(current->tutorialComplete))) return;
+        if (!process_read(process, gameModule + gameAddresses->inSpecialStage, &current->inSpecialStage, sizeof(current->inSpecialStage))) return;
+    }
+    else if (operatingSystem == 3 && operatingSystemArch == 1) { //Mac x86
+        Address tutorialComplete = 0;
+        if (!process_read(process, gameModule + gameAddresses->tutorialComplete, &tutorialComplete, sizeof(tutorialComplete))) return;
+        if (!process_read(process, tutorialComplete + 0x70F8, &current->tutorialComplete, sizeof(current->tutorialComplete))) return;
+        if (!process_read(process, gameModule + gameAddresses->inSpecialStage, &current->inSpecialStage, sizeof(current->inSpecialStage))) return;
+    }
 }
 
 void check_start() {
