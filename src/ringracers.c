@@ -255,7 +255,7 @@ bool set_process() {
         //Like the full file size etc
         //There needs to be some way we can version check something without requiring a Mac to run the program to get a module size
         if (moduleMemorySize == 178798592) setup(201); //2.0
-        if (moduleMemorySize == 178864128) setup(202); //2.3
+        else if (moduleMemorySize == 178864128) setup(202); //2.3
         else {
             cleanup();
             return false;
