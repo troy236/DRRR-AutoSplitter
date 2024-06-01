@@ -126,7 +126,17 @@ void setup(uint16_t gameVersion) {
         gameAddresses->inSpecialStage = 0x0;
     }
     //Mac ARM
-    else if (gameVersion == 201) { //2.3
+    else if (gameVersion == 201) { //2.0
+        gameAddresses->trackTics = 0xBC75CC;
+        gameAddresses->lap = 0xBC75DC;
+        gameAddresses->prisonLap = 0xBC75DD;
+        gameAddresses->totalLaps = 0xBC6F38;
+        gameAddresses->level = 0x978510;
+        gameAddresses->gameState = 0xBC6840;
+        gameAddresses->tutorialComplete = 0xBDFCB0;
+        gameAddresses->inSpecialStage = 0x650BF80;
+    }
+    else if (gameVersion == 202) { //2.3
         gameAddresses->trackTics = 0xBD7DD8;
         gameAddresses->lap = 0xBD7DE8;
         gameAddresses->prisonLap = 0xBD7DE9;
@@ -137,7 +147,17 @@ void setup(uint16_t gameVersion) {
         gameAddresses->inSpecialStage = 0x651ED28;
     }
     //Mac x86
-    else if (gameVersion == 301) { //2.3
+    else if (gameVersion == 301) { //2.0
+        gameAddresses->trackTics = 0xCC110C;
+        gameAddresses->lap = 0xCC111C;
+        gameAddresses->prisonLap = 0xCC111D;
+        gameAddresses->totalLaps = 0xCC0A7C;
+        gameAddresses->level = 0xA71E60;
+        gameAddresses->gameState = 0xCC0350;
+        gameAddresses->tutorialComplete = 0xCD9858;
+        gameAddresses->inSpecialStage = 0x6605C38;
+    }
+    else if (gameVersion == 302) { //2.3
         gameAddresses->trackTics = 0xCCD93C;
         gameAddresses->lap = 0xCCD94C;
         gameAddresses->prisonLap = 0xCCD94D;
@@ -234,7 +254,8 @@ bool set_process() {
         //Or something else I can use that I can grab without running the application
         //Like the full file size etc
         //There needs to be some way we can version check something without requiring a Mac to run the program to get a module size
-        if (moduleMemorySize == 178864128) setup(201); //2.3
+        if (moduleMemorySize == 178798592) setup(201); //2.0
+        if (moduleMemorySize == 178864128) setup(202); //2.3
         else {
             cleanup();
             return false;
@@ -268,13 +289,7 @@ void update_gamestate() {
         if (!process_read(process, tutorialComplete + 0x70C4, &current->tutorialComplete, sizeof(current->tutorialComplete))) return;
         if (!process_read(process, gameModule + gameAddresses->inSpecialStage, &current->inSpecialStage, sizeof(current->inSpecialStage))) return;
     }
-    else if (operatingSystem == 3 && operatingSystemArch == 2) { //Mac ARM
-        Address tutorialComplete = 0;
-        if (!process_read(process, gameModule + gameAddresses->tutorialComplete, &tutorialComplete, sizeof(tutorialComplete))) return;
-        if (!process_read(process, tutorialComplete + 0x7108, &current->tutorialComplete, sizeof(current->tutorialComplete))) return;
-        if (!process_read(process, gameModule + gameAddresses->inSpecialStage, &current->inSpecialStage, sizeof(current->inSpecialStage))) return;
-    }
-    else if (operatingSystem == 3 && operatingSystemArch == 1) { //Mac x86
+    else if (operatingSystem == 3) {
         Address tutorialComplete = 0;
         if (!process_read(process, gameModule + gameAddresses->tutorialComplete, &tutorialComplete, sizeof(tutorialComplete))) return;
         if (!process_read(process, tutorialComplete + 0x70F8, &current->tutorialComplete, sizeof(current->tutorialComplete))) return;
