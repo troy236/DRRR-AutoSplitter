@@ -249,13 +249,21 @@ bool set_process() {
             return false;
         }
     }
-    else if (operatingSystem == 3) {
+    else if (operatingSystem == 3 && operatingSystemArch == 2) {
         //Is there some way of getting moduleMemorySize without running the application? In any context not just the autosplitter so i can paste the value here
         //Or something else I can use that I can grab without running the application
         //Like the full file size etc
-        //There needs to be some way we can version check something without requiring a Mac to run the program to get a module size
+        //There needs to be some way we can version check something without requiring a M1 Mac to run the program to get a module size
         if (moduleMemorySize == 178798592) setup(201); //2.0
         else if (moduleMemorySize == 178864128) setup(202); //2.3
+        else {
+            cleanup();
+            return false;
+        }
+    }
+    else if (operatingSystem == 3 && operatingSystemArch == 1) {
+        if (moduleMemorySize == 179740672) setup(301); //2.0
+        else if (moduleMemorySize == 179814400) setup(302); //2.3
         else {
             cleanup();
             return false;
