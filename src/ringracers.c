@@ -114,8 +114,12 @@ void setup(uint16_t gameVersion) {
         gameAddresses->tutorialComplete = 0x11D2140;
         gameAddresses->inSpecialStage = 0x5D39F20;
     }
+    //Linux ARM
+    /*else if (gameVersion == 101) { //2.3
+        //TODO
+    }*/
     //Linux x86
-    else if (gameVersion == 101) { //2.3
+    else if (gameVersion == 201) { //2.3
         gameAddresses->trackTics = 0x99A968;
         gameAddresses->lap = 0x99A978;
         gameAddresses->prisonLap = 0x99A979;
@@ -126,7 +130,7 @@ void setup(uint16_t gameVersion) {
         gameAddresses->inSpecialStage = 0x0;
     }
     //Mac ARM
-    else if (gameVersion == 201) { //2.0
+    else if (gameVersion == 301) { //2.0
         gameAddresses->trackTics = 0xBC75CC;
         gameAddresses->lap = 0xBC75DC;
         gameAddresses->prisonLap = 0xBC75DD;
@@ -136,7 +140,7 @@ void setup(uint16_t gameVersion) {
         gameAddresses->tutorialComplete = 0xBDFCB0;
         gameAddresses->inSpecialStage = 0x650BF80;
     }
-    else if (gameVersion == 202) { //2.3
+    else if (gameVersion == 302) { //2.3
         gameAddresses->trackTics = 0xBD7DD8;
         gameAddresses->lap = 0xBD7DE8;
         gameAddresses->prisonLap = 0xBD7DE9;
@@ -147,7 +151,7 @@ void setup(uint16_t gameVersion) {
         gameAddresses->inSpecialStage = 0x651ED28;
     }
     //Mac x86
-    else if (gameVersion == 301) { //2.0
+    else if (gameVersion == 401) { //2.0
         gameAddresses->trackTics = 0xCC110C;
         gameAddresses->lap = 0xCC111C;
         gameAddresses->prisonLap = 0xCC111D;
@@ -157,7 +161,7 @@ void setup(uint16_t gameVersion) {
         gameAddresses->tutorialComplete = 0xCD9858;
         gameAddresses->inSpecialStage = 0x6605C38;
     }
-    else if (gameVersion == 302) { //2.3
+    else if (gameVersion == 402) { //2.3
         gameAddresses->trackTics = 0xCCD93C;
         gameAddresses->lap = 0xCCD94C;
         gameAddresses->prisonLap = 0xCCD94D;
@@ -242,8 +246,16 @@ bool set_process() {
             return false;
         }
     }
-    else if (operatingSystem == 2) {
-        if (moduleMemorySize == 9293824) setup(101); //2.3
+    /*else if (operatingSystem == 2 && operatingSystemArch == 2) {
+		//What program to use to scan process memory on Linux ARM?
+        if (moduleMemorySize == 8982528) setup(101); //2.3
+        else {
+            cleanup();
+            return false;
+        }
+    }*/
+    else if (operatingSystem == 2 && operatingSystemArch == 1) {
+        if (moduleMemorySize == 9293824) setup(201); //2.3
         else {
             cleanup();
             return false;
@@ -254,16 +266,16 @@ bool set_process() {
         //Or something else I can use that I can grab without running the application
         //Like the full file size etc
         //There needs to be some way we can version check something without requiring a M1 Mac to run the program to get a module size
-        if (moduleMemorySize == 178798592) setup(201); //2.0
-        else if (moduleMemorySize == 178864128) setup(202); //2.3
+        if (moduleMemorySize == 178798592) setup(301); //2.0
+        else if (moduleMemorySize == 178864128) setup(302); //2.3
         else {
             cleanup();
             return false;
         }
     }
     else if (operatingSystem == 3 && operatingSystemArch == 1) {
-        if (moduleMemorySize == 179740672) setup(301); //2.0
-        else if (moduleMemorySize == 179814400) setup(302); //2.3
+        if (moduleMemorySize == 179740672) setup(401); //2.0
+        else if (moduleMemorySize == 179814400) setup(402); //2.3
         else {
             cleanup();
             return false;
