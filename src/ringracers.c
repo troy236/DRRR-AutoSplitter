@@ -384,7 +384,7 @@ __attribute__((export_name("update"))) void update(void) {
         case RUNNING: {
             timer_pause_game_time();
             check_update();
-            timer_set_game_time_seconds_f32((totalIGT * 28.5714285714) / 1000);
+            timer_set_game_time(totalIGT / 35, ((uint32_t)((totalIGT % 35) * (1000.00f / 35))) * 1000000);
             if (check_split()) timer_split();
             break;
         }
