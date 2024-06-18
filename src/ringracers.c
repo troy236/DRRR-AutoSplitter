@@ -126,7 +126,7 @@ void setup(uint16_t gameVersion) {
         gameAddresses->totalLaps = 0x99958D;
         gameAddresses->level = 0x71B2EC;
         gameAddresses->gameState = 0x9A2264;
-        gameAddresses->tutorialComplete = 0x0;
+        gameAddresses->tutorialComplete = 0xA37EE0;
         gameAddresses->inSpecialStage = 0x0;
     }
     //Mac ARM
@@ -309,7 +309,7 @@ void update_gamestate() {
         if (!process_read(process, tutorialComplete + 0x70C4, &current->tutorialComplete, sizeof(current->tutorialComplete))) return;
         if (!process_read(process, gameModule + gameAddresses->inSpecialStage, &current->inSpecialStage, sizeof(current->inSpecialStage))) return;
     }
-    else if (operatingSystem == 3) {
+    else if (operatingSystem == 2 || operatingSystem == 3) {
         Address tutorialComplete = 0;
         if (!process_read(process, gameModule + gameAddresses->tutorialComplete, &tutorialComplete, sizeof(tutorialComplete))) return;
         if (!process_read(process, tutorialComplete + 0x70F8, &current->tutorialComplete, sizeof(current->tutorialComplete))) return;
