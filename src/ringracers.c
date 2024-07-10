@@ -35,6 +35,39 @@ GameState* current = 0;
 uint32_t totalIGT = 0;
 bool inCredits = false;
 
+bool settingsInitialized = false;
+bool splitCredits = true;
+bool autostartRingCup = true;
+bool autostartSneakerCup = false;
+bool autostartSpringCup = false;
+bool autostartBarrierCup = false;
+bool autostartInvincibleCup = false;
+bool autostartEmeraldCup = false;
+bool autostartExtraCup = false;
+bool autostartSPBCup = false;
+bool autostartRocketCup = false;
+bool autostartAquaCup = false;
+bool autostartLightningCup = false;
+bool autostartFlameCup = false;
+bool autostartSuperCup = false;
+bool autostartEggCup = false;
+bool autostartGogglesCup = false;
+bool autostartTimerCup = false;
+bool autostartGrowCup = false;
+bool autostartChaoCup = false;
+bool autostartWingCup = false;
+bool autostartMegaCup = false;
+bool autostartPhantomCup = false;
+bool autostartFlashCup = false;
+bool autostartSwapCup = false;
+bool autostartShrinkCup = false;
+bool autostartBombCup = false;
+bool autostartPowerCup = false;;
+bool autostartGenesisCup = false;
+bool autostartSkateCup = false;
+bool autostartRecycleCupA = false;
+bool autostartRecycleCupB = false;
+
 bool set_os() {
     char os[7];
     char arch[7];
@@ -324,8 +357,66 @@ void check_start() {
     if (old->gameState == 6 && !old->tutorialComplete && current->tutorialComplete) timer_start();
     //Start for Beat The Tutorial
     else if (old->level != 230 && current->gameState == 1 && current->level == 230) timer_start();
-    //Start for All Cups
-    else if (old->level != 5 && current->gameState == 1 && current->level == 5) timer_start();
+    //Start for All Cups/Ring Cup
+    else if (autostartRingCup && old->level != 5 && current->gameState == 1 && current->level == 5) timer_start();
+    //Start for Sneaker Cup
+    else if (autostartSneakerCup && old->level != 10 && current->gameState == 1 && current->level == 10) timer_start();
+    //Start for Spring Cup
+    else if (autostartSpringCup && old->level != 15 && current->gameState == 1 && current->level == 15) timer_start();
+    //Start for Barrier Cup
+    else if (autostartBarrierCup && old->level != 20 && current->gameState == 1 && current->level == 20) timer_start();
+    //Start for Invincible Cup
+    else if (autostartInvincibleCup && old->level != 25 && current->gameState == 1 && current->level == 25) timer_start();
+    //Start for Emerald Cup
+    else if (autostartEmeraldCup && old->level != 30 && current->gameState == 1 && current->level == 30) timer_start();
+    //Start for Extra Cup
+    else if (autostartExtraCup && old->level != 36 && current->gameState == 1 && current->level == 36) timer_start();
+    //Start for S.P.B Cup
+    else if (autostartSPBCup && old->level != 41 && current->gameState == 1 && current->level == 41) timer_start();
+    //Start for Rocket Cup
+    else if (autostartRocketCup && old->level != 46 && current->gameState == 1 && current->level == 46) timer_start();
+    //Start for Aqua Cup
+    else if (autostartAquaCup && old->level != 51 && current->gameState == 1 && current->level == 51) timer_start();
+    //Start for Lightning Cup
+    else if (autostartLightningCup && old->level != 56 && current->gameState == 1 && current->level == 56) timer_start();
+    //Start for Flame Cup
+    else if (autostartFlameCup && old->level != 61 && current->gameState == 1 && current->level == 61) timer_start();
+    //Start for Super Cup
+    else if (autostartSuperCup && old->level != 66 && current->gameState == 1 && current->level == 66) timer_start();
+    //Start for Egg Cup
+    else if (autostartEggCup && old->level != 71 && current->gameState == 1 && current->level == 71) timer_start();
+    //Start for Goggles Cup
+    else if (autostartGogglesCup && old->level != 75 && current->gameState == 1 && current->level == 75) timer_start();
+    //Start for Timer Cup
+    else if (autostartTimerCup && old->level != 80 && current->gameState == 1 && current->level == 80) timer_start();
+    //Start for Grow Cup
+    else if (autostartGrowCup && old->level != 85 && current->gameState == 1 && current->level == 85) timer_start();
+    //Start for Chao Cup
+    else if (autostartChaoCup && old->level != 90 && current->gameState == 1 && current->level == 90) timer_start();
+    //Start for Wing Cup
+    else if (autostartWingCup && old->level != 95 && current->gameState == 1 && current->level == 95) timer_start();
+    //Start for Mega Cup
+    else if (autostartMegaCup && old->level != 100 && current->gameState == 1 && current->level == 100) timer_start();
+    //Start for Phantom Cup
+    else if (autostartPhantomCup && old->level != 107 && current->gameState == 1 && current->level == 107) timer_start();
+    //Start for Flash Cup
+    else if (autostartFlashCup && old->level != 110 && current->gameState == 1 && current->level == 110) timer_start();
+    //Start for Swap Cup
+    else if (autostartSwapCup && old->level != 115 && current->gameState == 1 && current->level == 115) timer_start();
+    //Start for Shrink Cup
+    else if (autostartShrinkCup && old->level != 120 && current->gameState == 1 && current->level == 120) timer_start();
+    //Start for Bomb Cup
+    else if (autostartBombCup && old->level != 125 && current->gameState == 1 && current->level == 125) timer_start();
+    //Start for Power Cup
+    else if (autostartPowerCup && old->level != 130 && current->gameState == 1 && current->level == 130) timer_start();
+    //Start for Genesis Cup
+    else if (autostartGenesisCup && old->level != 135 && current->gameState == 1 && current->level == 135) timer_start();
+    //Start for Skate Cup
+    else if (autostartSkateCup && old->level != 140 && current->gameState == 1 && current->level == 140) timer_start();
+    //Start for Recycle Cup B
+    else if (autostartRecycleCupA && old->level != 145 && current->gameState == 1 && current->level == 145) timer_start();
+    //Start for Recycle Cup B
+    else if (autostartRecycleCupB && old->level != 150 && current->gameState == 1 && current->level == 150) timer_start();
 }
 
 void check_update() {
@@ -359,12 +450,210 @@ bool check_split() {
     if (!inCredits && old->gameState != 7 && current->gameState == 7) {
         //Avoids multiple splits at Credits due to demo footage changing gameState
         inCredits = true;
-        return true;
+        return splitCredits;
     }
     return false;
 }
 
+void set_settings() {
+    if (!settingsInitialized) {
+        splitCredits = user_settings_add_bool_helper("split_credits", "Split: Credits", true);
+        autostartRingCup = user_settings_add_bool_helper("autostart_ring_cup", "Auto start: Ring Cup", true);
+        autostartSneakerCup = user_settings_add_bool_helper("autostart_sneaker_cup", "Auto start: Sneaker Cup", false);
+        autostartSpringCup = user_settings_add_bool_helper("autostart_spring_cup", "Auto start: Spring Cup", false);
+        autostartBarrierCup = user_settings_add_bool_helper("autostart_barrier_cup", "Auto start: Barrier Cup", false);
+        autostartInvincibleCup = user_settings_add_bool_helper("autostart_invincible_cup", "Auto start: Invincible Cup", false);
+        autostartEmeraldCup = user_settings_add_bool_helper("autostart_emerald_cup", "Auto start: Emerald Cup", false);
+        autostartExtraCup = user_settings_add_bool_helper("autostart_extra_cup", "Auto start: Extra Cup", false);
+        autostartSPBCup = user_settings_add_bool_helper("autostart_spb_cup", "Auto start: S.P.B Cup", false);
+        autostartRocketCup = user_settings_add_bool_helper("autostart_rocket_cup", "Auto start: Rocket Cup", false);
+        autostartAquaCup = user_settings_add_bool_helper("autostart_aqua_cup", "Auto start: Aqua Cup", false);
+        autostartLightningCup = user_settings_add_bool_helper("autostart_lightning_cup", "Auto start: Lightning Cup", false);
+        autostartFlameCup = user_settings_add_bool_helper("autostart_flame_cup", "Auto start: Flame Cup", false);
+        autostartSuperCup = user_settings_add_bool_helper("autostart_super_cup", "Auto start: Super Cup", false);
+        autostartEggCup = user_settings_add_bool_helper("autostart_egg_cup", "Auto start: Egg Cup", false);
+        autostartGogglesCup = user_settings_add_bool_helper("autostart_goggles_cup", "Auto start: Goggles Cup", false);
+        autostartTimerCup = user_settings_add_bool_helper("autostart_timer_cup", "Auto start: Timer Cup", false);
+        autostartGrowCup = user_settings_add_bool_helper("autostart_grow_cup", "Auto start: Grow Cup", false);
+        autostartChaoCup = user_settings_add_bool_helper("autostart_chao_cup", "Auto start: Chao Cup", false);
+        autostartWingCup = user_settings_add_bool_helper("autostart_wing_cup", "Auto start: Wing Cup", false);
+        autostartMegaCup = user_settings_add_bool_helper("autostart_mega_cup", "Auto start: Mega Cup", false);
+        autostartPhantomCup = user_settings_add_bool_helper("autostart_phantom_cup", "Auto start: Phantom Cup", false);
+        autostartFlashCup = user_settings_add_bool_helper("autostart_flash_cup", "Auto start: Flash Cup", false);
+        autostartSwapCup = user_settings_add_bool_helper("autostart_swap_cup", "Auto start: Swap Cup", false);
+        autostartShrinkCup = user_settings_add_bool_helper("autostart_shrink_cup", "Auto start: Shrink Cup", false);
+        autostartBombCup = user_settings_add_bool_helper("autostart_bomb_cup", "Auto start: Bomb Cup", false);
+        autostartPowerCup = user_settings_add_bool_helper("autostart_power_cup", "Auto start: Power Cup", false);
+        autostartGenesisCup = user_settings_add_bool_helper("autostart_genesis_cup", "Auto start: Genesis Cup", false);
+        autostartSkateCup = user_settings_add_bool_helper("autostart_skate_cup", "Auto start: Skate Cup", false);
+        autostartRecycleCupA = user_settings_add_bool_helper("autostart_recycle_cup_a", "Auto start: Recycle Cup A", false);
+        autostartRecycleCupB = user_settings_add_bool_helper("autostart_recycle_cup_b", "Auto start: Recycle Cup B", false);
+        settingsInitialized = true;
+        return;
+    }
+    uint64_t settingsMap = settings_map_load();
+    uint64_t mapLength = settings_map_len(settingsMap);
+    if (mapLength == 0) return;
+    uint64_t creditsSettingValue = settings_map_get_helper(settingsMap, "split_credits");
+    uint64_t ringCupSettingValue = settings_map_get_helper(settingsMap, "autostart_ring_cup");
+    uint64_t sneakerCupSettingValue = settings_map_get_helper(settingsMap, "autostart_sneaker_cup");
+    uint64_t springCupSettingValue = settings_map_get_helper(settingsMap, "autostart_spring_cup");
+    uint64_t barrierCupSettingValue = settings_map_get_helper(settingsMap, "autostart_barrier_cup");
+    uint64_t invincibleCupSettingValue = settings_map_get_helper(settingsMap, "autostart_invincible_cup");
+    uint64_t emeraldCupSettingValue = settings_map_get_helper(settingsMap, "autostart_emerald_cup");
+    uint64_t extraCupSettingValue = settings_map_get_helper(settingsMap, "autostart_extra_cup");
+    uint64_t spbCupSettingValue = settings_map_get_helper(settingsMap, "autostart_spb_cup");
+    uint64_t rocketCupSettingValue = settings_map_get_helper(settingsMap, "autostart_rocket_cup");
+    uint64_t aquaCupSettingValue = settings_map_get_helper(settingsMap, "autostart_aqua_cup");
+    uint64_t lightningCupSettingValue = settings_map_get_helper(settingsMap, "autostart_lightning_cup");
+    uint64_t flameCupSettingValue = settings_map_get_helper(settingsMap, "autostart_flame_cup");
+    uint64_t superCupSettingValue = settings_map_get_helper(settingsMap, "autostart_super_cup");
+    uint64_t eggCupSettingValue = settings_map_get_helper(settingsMap, "autostart_egg_cup");
+    uint64_t gogglesCupSettingValue = settings_map_get_helper(settingsMap, "autostart_goggles_cup");
+    uint64_t timerCupSettingValue = settings_map_get_helper(settingsMap, "autostart_timer_cup");
+    uint64_t growCupSettingValue = settings_map_get_helper(settingsMap, "autostart_grow_cup");
+    uint64_t chaoCupSettingValue = settings_map_get_helper(settingsMap, "autostart_chao_cup");
+    uint64_t wingCupSettingValue = settings_map_get_helper(settingsMap, "autostart_wing_cup");
+    uint64_t megaCupSettingValue = settings_map_get_helper(settingsMap, "autostart_mega_cup");
+    uint64_t phantomCupSettingValue = settings_map_get_helper(settingsMap, "autostart_phantom_cup");
+    uint64_t flashCupSettingValue = settings_map_get_helper(settingsMap, "autostart_flash_cup");
+    uint64_t swapCupSettingValue = settings_map_get_helper(settingsMap, "autostart_swap_cup");
+    uint64_t shrinkCupSettingValue = settings_map_get_helper(settingsMap, "autostart_shrink_cup");
+    uint64_t bombCupSettingValue = settings_map_get_helper(settingsMap, "autostart_bomb_cup");
+    uint64_t powerCupSettingValue = settings_map_get_helper(settingsMap, "autostart_power_cup");
+    uint64_t genesisCupSettingValue = settings_map_get_helper(settingsMap, "autostart_genesis_cup");
+    uint64_t skateCupSettingValue = settings_map_get_helper(settingsMap, "autostart_skate_cup");
+    uint64_t recycleCupASettingValue = settings_map_get_helper(settingsMap, "autostart_recycle_cup_a");
+    uint64_t recycleCupBSettingValue = settings_map_get_helper(settingsMap, "autostart_recycle_cup_b");
+    if (creditsSettingValue != 0) {
+        setting_value_get_bool(creditsSettingValue, &splitCredits);
+        setting_value_free(creditsSettingValue);
+    }
+    if (ringCupSettingValue != 0) {
+        setting_value_get_bool(ringCupSettingValue, &autostartRingCup);
+        setting_value_free(ringCupSettingValue);
+    }
+    if (sneakerCupSettingValue != 0) {
+        setting_value_get_bool(sneakerCupSettingValue, &autostartSneakerCup);
+        setting_value_free(sneakerCupSettingValue);
+    }
+    if (springCupSettingValue != 0) {
+        setting_value_get_bool(springCupSettingValue, &autostartSpringCup);
+        setting_value_free(springCupSettingValue);
+    }
+    if (barrierCupSettingValue != 0) {
+        setting_value_get_bool(barrierCupSettingValue, &autostartSneakerCup);
+        setting_value_free(barrierCupSettingValue);
+    }
+    if (invincibleCupSettingValue != 0) {
+        setting_value_get_bool(invincibleCupSettingValue, &autostartInvincibleCup);
+        setting_value_free(invincibleCupSettingValue);
+    }
+    if (emeraldCupSettingValue != 0) {
+        setting_value_get_bool(emeraldCupSettingValue, &autostartEmeraldCup);
+        setting_value_free(emeraldCupSettingValue);
+    }
+    if (extraCupSettingValue != 0) {
+        setting_value_get_bool(extraCupSettingValue, &autostartExtraCup);
+        setting_value_free(extraCupSettingValue);
+    }
+    if (spbCupSettingValue != 0) {
+        setting_value_get_bool(spbCupSettingValue, &autostartSPBCup);
+        setting_value_free(spbCupSettingValue);
+    }
+    if (rocketCupSettingValue != 0) {
+        setting_value_get_bool(rocketCupSettingValue, &autostartRocketCup);
+        setting_value_free(rocketCupSettingValue);
+    }
+    if (aquaCupSettingValue != 0) {
+        setting_value_get_bool(aquaCupSettingValue, &autostartAquaCup);
+        setting_value_free(aquaCupSettingValue);
+    }
+    if (lightningCupSettingValue != 0) {
+        setting_value_get_bool(lightningCupSettingValue, &autostartLightningCup);
+        setting_value_free(lightningCupSettingValue);
+    }
+    if (flameCupSettingValue != 0) {
+        setting_value_get_bool(flameCupSettingValue, &autostartFlameCup);
+        setting_value_free(flameCupSettingValue);
+    }
+    if (superCupSettingValue != 0) {
+        setting_value_get_bool(superCupSettingValue, &autostartSuperCup);
+        setting_value_free(superCupSettingValue);
+    }
+    if (eggCupSettingValue != 0) {
+        setting_value_get_bool(eggCupSettingValue, &autostartEggCup);
+        setting_value_free(eggCupSettingValue);
+    }
+    if (gogglesCupSettingValue != 0) {
+        setting_value_get_bool(gogglesCupSettingValue, &autostartGogglesCup);
+        setting_value_free(gogglesCupSettingValue);
+    }
+    if (timerCupSettingValue != 0) {
+        setting_value_get_bool(timerCupSettingValue, &autostartTimerCup);
+        setting_value_free(timerCupSettingValue);
+    }
+    if (growCupSettingValue != 0) {
+        setting_value_get_bool(growCupSettingValue, &autostartGrowCup);
+        setting_value_free(growCupSettingValue);
+    }
+    if (chaoCupSettingValue != 0) {
+        setting_value_get_bool(chaoCupSettingValue, &autostartChaoCup);
+        setting_value_free(chaoCupSettingValue);
+    }
+    if (wingCupSettingValue != 0) {
+        setting_value_get_bool(wingCupSettingValue, &autostartWingCup);
+        setting_value_free(wingCupSettingValue);
+    }
+    if (megaCupSettingValue != 0) {
+        setting_value_get_bool(megaCupSettingValue, &autostartMegaCup);
+        setting_value_free(megaCupSettingValue);
+    }
+    if (phantomCupSettingValue != 0) {
+        setting_value_get_bool(phantomCupSettingValue, &autostartPhantomCup);
+        setting_value_free(phantomCupSettingValue);
+    }
+    if (flashCupSettingValue != 0) {
+        setting_value_get_bool(flashCupSettingValue, &autostartFlashCup);
+        setting_value_free(flashCupSettingValue);
+    }
+    if (swapCupSettingValue != 0) {
+        setting_value_get_bool(swapCupSettingValue, &autostartSwapCup);
+        setting_value_free(swapCupSettingValue);
+    }
+    if (shrinkCupSettingValue != 0) {
+        setting_value_get_bool(shrinkCupSettingValue, &autostartShrinkCup);
+        setting_value_free(shrinkCupSettingValue);
+    }
+    if (bombCupSettingValue != 0) {
+        setting_value_get_bool(bombCupSettingValue, &autostartBombCup);
+        setting_value_free(bombCupSettingValue);
+    }
+    if (powerCupSettingValue != 0) {
+        setting_value_get_bool(powerCupSettingValue, &autostartPowerCup);
+        setting_value_free(powerCupSettingValue);
+    }
+    if (genesisCupSettingValue != 0) {
+        setting_value_get_bool(genesisCupSettingValue, &autostartGenesisCup);
+        setting_value_free(genesisCupSettingValue);
+    }
+    if (skateCupSettingValue != 0) {
+        setting_value_get_bool(skateCupSettingValue, &autostartSkateCup);
+        setting_value_free(skateCupSettingValue);
+    }
+    if (recycleCupASettingValue != 0) {
+        setting_value_get_bool(recycleCupASettingValue, &autostartRecycleCupA);
+        setting_value_free(recycleCupASettingValue);
+    }
+    if (recycleCupBSettingValue != 0) {
+        setting_value_get_bool(recycleCupBSettingValue, &autostartRecycleCupB);
+        setting_value_free(recycleCupBSettingValue);
+    }
+    settings_map_free(settingsMap);
+}
+
 __attribute__((export_name("update"))) void update(void) {
+    set_settings();
     if (operatingSystem == 0) {
         if (!set_os()) return;
     }

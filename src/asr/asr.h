@@ -94,3 +94,23 @@ void runtime_print_message(char const *text_ptr, size_t text_len);
 /// Adds a new setting that the user can modify. This will return either
 /// the specified default value or the value that the user has set.
 bool user_settings_add_bool(const char* key_ptr, size_t key_len, const char* description_ptr, size_t description_len, bool default_value);
+
+/// Loads a copy of the currently set global settings map. Any changes to it
+/// are only perceived if it's stored back. You own the settings map and are
+/// responsible for freeing it.
+uint64_t settings_map_load();
+/// Gets a copy of the setting value from the settings map based on the key.
+/// Returns `None` if the key does not exist. Any changes to it are only
+/// perceived if it's stored back. You own the setting value and are
+/// responsible for freeing it. The pointer needs to point to valid UTF-8
+/// encoded text with the given length.
+uint64_t settings_map_get(uint64_t map, const char* key_ptr, size_t key_len);
+/// Gets the length of a settings map.
+uint64_t settings_map_len(uint64_t map);
+/// Frees a settings map.
+void settings_map_free(uint64_t map);
+
+/// Gets the length of a settings map.
+bool setting_value_get_bool(uint64_t value, bool* value_ptr);
+/// Frees a setting value.
+void setting_value_free(uint64_t value);

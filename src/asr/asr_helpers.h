@@ -18,3 +18,14 @@ uint64_t process_get_module_size_cstr(ProcessId process, const char* name);
 
 /// Prints a log message for debugging purposes.
 void runtime_print_message_cstr(char const *text);
+
+/// Adds a new setting that the user can modify. This will return either
+/// the specified default value or the value that the user has set.
+bool user_settings_add_bool_helper(const char* key_ptr, const char* description_ptr, bool default_value);
+
+/// Gets a copy of the setting value from the settings map based on the key.
+/// Returns `None` if the key does not exist. Any changes to it are only
+/// perceived if it's stored back. You own the setting value and are
+/// responsible for freeing it. The pointer needs to point to valid UTF-8
+/// encoded text with the given length.
+uint64_t settings_map_get_helper(uint64_t map, const char* key_ptr);

@@ -18,4 +18,10 @@ runtime_get_os
 runtime_get_arch
 runtime_set_tick_rate
 runtime_print_message
+settings_map_load
+settings_map_get
+settings_map_len
+settings_map_free
+setting_value_get_bool
+setting_value_free
 user_settings_add_bool
