@@ -542,7 +542,7 @@ void set_settings() {
         setting_value_free(springCupSettingValue);
     }
     if (barrierCupSettingValue != 0) {
-        setting_value_get_bool(barrierCupSettingValue, &autostartSneakerCup);
+        setting_value_get_bool(barrierCupSettingValue, &autostartBarrierCup);
         setting_value_free(barrierCupSettingValue);
     }
     if (invincibleCupSettingValue != 0) {
