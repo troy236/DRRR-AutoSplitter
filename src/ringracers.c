@@ -36,7 +36,14 @@ uint32_t totalIGT = 0;
 bool inCredits = false;
 
 bool settingsInitialized = false;
+bool autostartAnyPercentEmerald = true;
+bool autostartTutorial = true;
+bool splitEndTrack = true;
+bool splitEndPrison = true;
+bool splitEndEmerald = true;
 bool splitCredits = true;
+bool splitEndChaosEmeraldRun = true;
+bool splitEndSuperEmeraldRun = true;
 bool autostartRingCup = true;
 bool autostartSneakerCup = false;
 bool autostartSpringCup = false;
@@ -354,9 +361,9 @@ void check_start() {
     totalIGT = 0;
     inCredits = false;
     //Start for NG runs
-    if (old->gameState == 6 && !old->tutorialComplete && current->tutorialComplete) timer_start();
+    if (autostartAnyPercentEmerald && old->gameState == 6 && !old->tutorialComplete && current->tutorialComplete) timer_start();
     //Start for Beat The Tutorial
-    else if (old->level != 230 && current->gameState == 1 && current->level == 230) timer_start();
+    else if (autostartTutorial && old->level != 230 && current->gameState == 1 && current->level == 230) timer_start();
     //Start for All Cups/Ring Cup
     else if (autostartRingCup && old->level != 5 && current->gameState == 1 && current->level == 5) timer_start();
     //Start for Sneaker Cup
@@ -413,7 +420,7 @@ void check_start() {
     else if (autostartGenesisCup && old->level != 135 && current->gameState == 1 && current->level == 135) timer_start();
     //Start for Skate Cup
     else if (autostartSkateCup && old->level != 140 && current->gameState == 1 && current->level == 140) timer_start();
-    //Start for Recycle Cup B
+    //Start for Recycle Cup A
     else if (autostartRecycleCupA && old->level != 145 && current->gameState == 1 && current->level == 145) timer_start();
     //Start for Recycle Cup B
     else if (autostartRecycleCupB && old->level != 150 && current->gameState == 1 && current->level == 150) timer_start();
@@ -439,9 +446,14 @@ bool check_split() {
     //Cannot find a decent Emerald collected boolean
 	
     //Split on Race/Special stage complete
-    if (old->lap > old->totalLaps && current->level != old->level) return true;
+    if (old->lap > old->totalLaps && current->level != old->level) {
+        if (old->level == 221) return splitEndChaosEmeraldRun;
+        if (old->level == 228) return splitEndSuperEmeraldRun;
+        if (old->level >= 215 && old->level <= 228) return splitEndEmerald;
+        return splitEndTrack;
+    }
     //Split on Prison stage complete
-    if (old->prisonLap == 1 && old->lap == 0 && current->level != old->level) return true;
+    if (old->prisonLap == 1 && old->lap == 0 && current->level != old->level) return splitEndPrison;
     //Split on Tutorial stage complete
     if (old->level >= 230 && old->level <= 234 && current->gameState == 1 && current->level != old->level) return true;
     //Split on Springs Tutorial stage to menu
@@ -457,7 +469,14 @@ bool check_split() {
 
 void set_settings() {
     if (!settingsInitialized) {
-        splitCredits = user_settings_add_bool_helper("split_credits", "Split: Credits", true);
+        autostartAnyPercentEmerald = user_settings_add_bool_helper("autostart_any_percent_emerald", "Auto start: Any%/All Emeralds", true);
+        autostartTutorial = user_settings_add_bool_helper("autostart_tutorial", "Auto start: Beat the Tutorial", false);
+        splitEndTrack = user_settings_add_bool_helper("split_end_track", "Split: On completed tracks", true);
+        splitEndPrison = user_settings_add_bool_helper("split_end_prison", "Split: On completed Prisons", false);
+        splitEndEmerald = user_settings_add_bool_helper("split_end_emerald", "Split: On completed Sealed Stars", true);
+        splitCredits = user_settings_add_bool_helper("split_credits", "Split: Credits/End of Any%", true);
+        splitEndChaosEmeraldRun = user_settings_add_bool_helper("split_end_chaos_emerald_run", "Split: End of All Chaos Emeralds", true);
+        splitEndSuperEmeraldRun = user_settings_add_bool_helper("split_end_super_emerald_run", "Split: End of All Super Emeralds", true);
         autostartRingCup = user_settings_add_bool_helper("autostart_ring_cup", "Auto start: Ring Cup", true);
         autostartSneakerCup = user_settings_add_bool_helper("autostart_sneaker_cup", "Auto start: Sneaker Cup", false);
         autostartSpringCup = user_settings_add_bool_helper("autostart_spring_cup", "Auto start: Spring Cup", false);
@@ -494,7 +513,14 @@ void set_settings() {
     uint64_t settingsMap = settings_map_load();
     uint64_t mapLength = settings_map_len(settingsMap);
     if (mapLength == 0) return;
+    uint64_t autostartAnyPercentEmeraldSettingValue = settings_map_get_helper(settingsMap, "autostart_any_percent_emerald");
+    uint64_t autostartTutorialSettingValue = settings_map_get_helper(settingsMap, "autostart_tutorial");
+    uint64_t splitEndTrackSettingValue = settings_map_get_helper(settingsMap, "split_end_track");
+    uint64_t splitEndPrisonSettingValue = settings_map_get_helper(settingsMap, "split_end_prison");
+    uint64_t splitEndEmeraldSettingValue = settings_map_get_helper(settingsMap, "split_end_emerald");
     uint64_t creditsSettingValue = settings_map_get_helper(settingsMap, "split_credits");
+    uint64_t splitEndChaosEmeraldRunSettingValue = settings_map_get_helper(settingsMap, "split_end_chaos_emerald_run");
+    uint64_t splitEndSuperEmeraldRunSettingValue = settings_map_get_helper(settingsMap, "split_end_super_emerald_run");
     uint64_t ringCupSettingValue = settings_map_get_helper(settingsMap, "autostart_ring_cup");
     uint64_t sneakerCupSettingValue = settings_map_get_helper(settingsMap, "autostart_sneaker_cup");
     uint64_t springCupSettingValue = settings_map_get_helper(settingsMap, "autostart_spring_cup");
@@ -525,9 +551,37 @@ void set_settings() {
     uint64_t skateCupSettingValue = settings_map_get_helper(settingsMap, "autostart_skate_cup");
     uint64_t recycleCupASettingValue = settings_map_get_helper(settingsMap, "autostart_recycle_cup_a");
     uint64_t recycleCupBSettingValue = settings_map_get_helper(settingsMap, "autostart_recycle_cup_b");
+    if (autostartAnyPercentEmeraldSettingValue != 0) {
+        setting_value_get_bool(autostartAnyPercentEmeraldSettingValue, &autostartAnyPercentEmerald);
+        setting_value_free(autostartAnyPercentEmeraldSettingValue);
+    }
+    if (autostartTutorialSettingValue != 0) {
+        setting_value_get_bool(autostartTutorialSettingValue, &autostartTutorial);
+        setting_value_free(autostartTutorialSettingValue);
+    }
+    if (splitEndTrackSettingValue != 0) {
+        setting_value_get_bool(splitEndTrackSettingValue, &splitEndTrack);
+        setting_value_free(splitEndTrackSettingValue);
+    }
+    if (splitEndPrisonSettingValue != 0) {
+        setting_value_get_bool(splitEndPrisonSettingValue, &splitEndPrison);
+        setting_value_free(splitEndPrisonSettingValue);
+    }
+    if (splitEndEmeraldSettingValue != 0) {
+        setting_value_get_bool(splitEndEmeraldSettingValue, &splitEndEmerald);
+        setting_value_free(splitEndEmeraldSettingValue);
+    }
     if (creditsSettingValue != 0) {
         setting_value_get_bool(creditsSettingValue, &splitCredits);
         setting_value_free(creditsSettingValue);
+    }
+    if (splitEndChaosEmeraldRunSettingValue != 0) {
+        setting_value_get_bool(splitEndChaosEmeraldRunSettingValue, &splitEndChaosEmeraldRun);
+        setting_value_free(splitEndChaosEmeraldRunSettingValue);
+    }
+    if (splitEndSuperEmeraldRunSettingValue != 0) {
+        setting_value_get_bool(splitEndSuperEmeraldRunSettingValue, &splitEndSuperEmeraldRun);
+        setting_value_free(splitEndSuperEmeraldRunSettingValue);
     }
     if (ringCupSettingValue != 0) {
         setting_value_get_bool(ringCupSettingValue, &autostartRingCup);
