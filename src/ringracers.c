@@ -447,8 +447,8 @@ bool check_split() {
 	
     //Split on Race/Special stage complete
     if (old->lap > old->totalLaps && current->level != old->level) {
-        if (old->level == 221) return splitEndChaosEmeraldRun;
-        if (old->level == 228) return splitEndSuperEmeraldRun;
+        if (old->level == 221) return splitEndChaosEmeraldRun || splitEndEmerald;
+        if (old->level == 228) return splitEndSuperEmeraldRun || splitEndEmerald;
         if (old->level >= 215 && old->level <= 228) return splitEndEmerald;
         return splitEndTrack;
     }
