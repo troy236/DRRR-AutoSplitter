@@ -26,6 +26,7 @@ typedef struct {
 
 uint8_t operatingSystem = 0;
 uint8_t operatingSystemArch = 0;
+uint16_t gameVersion = 0;
 ProcessId process = 0;
 Address gameModule = 0;
 GameAddresses* gameAddresses = 0;
@@ -109,7 +110,7 @@ bool set_os() {
     return true;
 }
 
-void setup(uint16_t gameVersion) {
+void setup() {
     gameAddresses = malloc(sizeof(GameAddresses));
     old = malloc(sizeof(GameState));
     current = malloc(sizeof(GameState));
@@ -246,6 +247,7 @@ void cleanup() {
     if (gameAddresses != 0) free(gameAddresses);
     if (old != 0) free(old);
     if (current != 0) free(current);
+    gameVersion = 0;
     gameAddresses = 0;
     old = 0;
     current = 0;
@@ -287,11 +289,11 @@ bool set_process() {
         moduleMemorySize = process_get_module_size_cstr(process, "ringracers");
     }
     if (operatingSystem == 1) {
-        if (moduleMemorySize == 162025472) setup(1); //2.0
-        else if (moduleMemorySize == 162033664) setup(2); //2.1
-        else if (moduleMemorySize == 162512896) setup(3); //2.2
-        else if (moduleMemorySize == 162881536) setup(4); //2.3
-        else if (moduleMemorySize == 30916608) setup(5); //2.4 RC1
+        if (moduleMemorySize == 162025472) gameVersion = 1; //2.0
+        else if (moduleMemorySize == 162033664) gameVersion = 2; //2.1
+        else if (moduleMemorySize == 162512896) gameVersion = 3; //2.2
+        else if (moduleMemorySize == 162881536) gameVersion = 4; //2.3
+        else if (moduleMemorySize == 30916608) gameVersion = 5; //2.4 RC1
         else {
             cleanup();
             return false;
@@ -306,7 +308,7 @@ bool set_process() {
         }
     }*/
     else if (operatingSystem == 2 && operatingSystemArch == 1) {
-        if (moduleMemorySize == 9293824) setup(201); //2.3
+        if (moduleMemorySize == 9293824) gameVersion = 201; //2.3
         else {
             cleanup();
             return false;
@@ -317,21 +319,22 @@ bool set_process() {
         //Or something else I can use that I can grab without running the application
         //Like the full file size etc
         //There needs to be some way we can version check something without requiring a M1 Mac to run the program to get a module size
-        if (moduleMemorySize == 178798592) setup(301); //2.0
-        else if (moduleMemorySize == 178864128) setup(302); //2.3
+        if (moduleMemorySize == 178798592) gameVersion = 301; //2.0
+        else if (moduleMemorySize == 178864128) gameVersion = 302; //2.3
         else {
             cleanup();
             return false;
         }
     }
     else if (operatingSystem == 3 && operatingSystemArch == 1) {
-        if (moduleMemorySize == 179740672) setup(401); //2.0
-        else if (moduleMemorySize == 179814400) setup(402); //2.3
+        if (moduleMemorySize == 179740672) gameVersion = 401; //2.0
+        else if (moduleMemorySize == 179814400) gameVersion = 402; //2.3
         else {
             cleanup();
             return false;
         }
     }
+    setup();
     runtime_set_tick_rate(35);
     totalIGT = 0;
     inCredits = false;
@@ -372,9 +375,14 @@ void check_start() {
     totalIGT = 0;
     inCredits = false;
     //Start for NG runs
-    if (autostartAnyPercentEmerald && old->gameState == 6 && !old->tutorialComplete && current->tutorialComplete) timer_start();
+    if (gameVersion == 5) { //Hopefully temporary 2.4 support. Please have gaster back in the full 2.4 release!
+        if (autostartAnyPercentEmerald && old->gameState == 10 && old->level == 232 && current->level != 232) timer_start();
+    }
+    else {
+        if (autostartAnyPercentEmerald && old->gameState == 6 && !old->tutorialComplete && current->tutorialComplete) timer_start();
+    }
     //Start for Beat The Tutorial
-    else if (autostartTutorial && old->level != 230 && current->gameState == 1 && current->level == 230) timer_start();
+    if (autostartTutorial && old->level != 230 && current->gameState == 1 && current->level == 230) timer_start();
     //Start for All Cups/Ring Cup
     else if (autostartRingCup && old->level != 5 && current->gameState == 1 && current->level == 5) timer_start();
     //Start for Sneaker Cup
