@@ -154,6 +154,16 @@ void setup(uint16_t gameVersion) {
         gameAddresses->tutorialComplete = 0x11D2140;
         gameAddresses->inSpecialStage = 0x5D39F20;
     }
+    else if (gameVersion == 5) { //2.4 RC1
+        gameAddresses->trackTics = 0x13DF828;
+        gameAddresses->lap = 0x13DF838;
+        gameAddresses->prisonLap = 0x13DF839;
+        gameAddresses->totalLaps = 0x13DEC55;
+        gameAddresses->level = 0xC450B4;
+        gameAddresses->gameState = 0x13E6E44;
+        gameAddresses->tutorialComplete = 0x145E880;
+        gameAddresses->inSpecialStage = 0x1B381A0;
+    }
     //Linux ARM
     /*else if (gameVersion == 101) { //2.3
         //TODO
@@ -281,6 +291,7 @@ bool set_process() {
         else if (moduleMemorySize == 162033664) setup(2); //2.1
         else if (moduleMemorySize == 162512896) setup(3); //2.2
         else if (moduleMemorySize == 162881536) setup(4); //2.3
+        else if (moduleMemorySize == 30916608) setup(5); //2.4 RC1
         else {
             cleanup();
             return false;
