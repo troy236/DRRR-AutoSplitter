@@ -155,25 +155,15 @@ void setup() {
         gameAddresses->tutorialComplete = 0x11D2140;
         gameAddresses->inSpecialStage = 0x5D39F20;
     }
-    else if (gameVersion == 5) { //2.4 RC1
-        gameAddresses->trackTics = 0x13DF828;
-        gameAddresses->lap = 0x13DF838;
-        gameAddresses->prisonLap = 0x13DF839;
-        gameAddresses->totalLaps = 0x13DEC55;
-        gameAddresses->level = 0xC450B4;
-        gameAddresses->gameState = 0x13E6E44;
-        gameAddresses->tutorialComplete = 0x145E880;
-        gameAddresses->inSpecialStage = 0x1B381A0;
-    }
-    else if (gameVersion == 6) { //2.4 RC3
-        gameAddresses->trackTics = 0x1406FE8;
-        gameAddresses->lap = 0x1406FF8;
-        gameAddresses->prisonLap = 0x1406FF9;
-        gameAddresses->totalLaps = 0x1406415;
-        gameAddresses->level = 0xC550B4;
-        gameAddresses->gameState = 0x140E604;
-        gameAddresses->tutorialComplete = 0x14860A0;
-        gameAddresses->inSpecialStage = 0x1B5FA60;
+    else if (gameVersion == 5) { //2.4
+        gameAddresses->trackTics = 0x14608F0;
+        gameAddresses->lap = 0x1460900;
+        gameAddresses->prisonLap = 0x1460901;
+        gameAddresses->totalLaps = 0x145FD15;
+        gameAddresses->level = 0xC610B4;
+        gameAddresses->gameState = 0x1468004;
+        gameAddresses->tutorialComplete = 0x14DFAE0; //Unused
+        gameAddresses->inSpecialStage = 0x1BB99C0;
     }
     //Linux ARM
     /*else if (gameVersion == 101) { //2.3
@@ -303,8 +293,7 @@ bool set_process() {
         else if (moduleMemorySize == 162033664) gameVersion = 2; //2.1
         else if (moduleMemorySize == 162512896) gameVersion = 3; //2.2
         else if (moduleMemorySize == 162881536) gameVersion = 4; //2.3
-        else if (moduleMemorySize == 30916608) gameVersion = 5; //2.4 RC1
-        else if (moduleMemorySize == 31084544) gameVersion = 6; //2.4 RC3
+        else if (moduleMemorySize == 31457280) gameVersion = 5; //2.4
         else {
             cleanup();
             return false;
@@ -386,7 +375,7 @@ void check_start() {
     totalIGT = 0;
     inCredits = false;
     //Start for NG runs
-    if (gameVersion == 5 || gameVersion == 6) { //2.4 NG run autostart support, gaster likely not returning
+    if (gameVersion == 5) { //2.4 NG run autostart support
         if (autostartAnyPercentEmerald && old->gameState == 10 && old->level == 232 && current->level != 232) timer_start();
     }
     else {

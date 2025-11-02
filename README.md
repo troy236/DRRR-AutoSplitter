@@ -1,7 +1,6 @@
 This WASM autosplitter currently supports the following systems and game versions:
 ## Windows x86
-- 2.4 RC3
-- 2.4 RC1
+- 2.4
 - 2.3
 - 2.2
 - 2.1
