@@ -162,7 +162,7 @@ void setup() {
         gameAddresses->totalLaps = 0x145FD15;
         gameAddresses->level = 0xC610B4;
         gameAddresses->gameState = 0x1468004;
-        gameAddresses->tutorialComplete = 0x14DFAE0; //Unused
+        gameAddresses->tutorialComplete = 0x0; //Unused
         gameAddresses->inSpecialStage = 0x1BB99C0;
     }
     //Linux ARM
@@ -178,6 +178,16 @@ void setup() {
         gameAddresses->level = 0x71B2EC;
         gameAddresses->gameState = 0x9A2264;
         gameAddresses->tutorialComplete = 0xA37EE0;
+        gameAddresses->inSpecialStage = 0x0;
+    }
+    else if (gameVersion == 202) { //2.4
+        gameAddresses->trackTics = 0xC85258;
+        gameAddresses->lap = 0xC85268;
+        gameAddresses->prisonLap = 0xC85269;
+        gameAddresses->totalLaps = 0xC83F55;
+        gameAddresses->level = 0x789424;
+        gameAddresses->gameState = 0xC8D3C4;
+        gameAddresses->tutorialComplete = 0x0;
         gameAddresses->inSpecialStage = 0x0;
     }
     //Mac ARM
@@ -201,6 +211,16 @@ void setup() {
         gameAddresses->tutorialComplete = 0xBF0A40;
         gameAddresses->inSpecialStage = 0x651ED28;
     }
+    else if (gameVersion == 303) { //2.4
+        gameAddresses->trackTics = 0x1549BD8;
+        gameAddresses->lap = 0x1549BE8;
+        gameAddresses->prisonLap = 0x1549BE9;
+        gameAddresses->totalLaps = 0x1549484;
+        gameAddresses->level = 0xA4BCB8;
+        gameAddresses->gameState = 0xE3E2E8;
+        gameAddresses->tutorialComplete = 0x0; //Unused
+        gameAddresses->inSpecialStage = 0x17486C0;
+    }
     //Mac x86
     else if (gameVersion == 401) { //2.0
         gameAddresses->trackTics = 0xCC110C;
@@ -221,6 +241,16 @@ void setup() {
         gameAddresses->gameState = 0xCCCB80;
         gameAddresses->tutorialComplete = 0xCE6608;
         gameAddresses->inSpecialStage = 0x66149F8;
+    }
+    else if (gameVersion == 403) { //2.4
+        gameAddresses->trackTics = 0x161E638;
+        gameAddresses->lap = 0x161E648;
+        gameAddresses->prisonLap = 0x161E649;
+        gameAddresses->totalLaps = 0x161E01C;
+        gameAddresses->level = 0xB38130;
+        gameAddresses->gameState = 0xF284A0;
+        gameAddresses->tutorialComplete = 0x0; //Unused
+        gameAddresses->inSpecialStage = 0x1812BC0;
     }
     old->trackTics = 0;
     old->lap = 0;
@@ -309,6 +339,7 @@ bool set_process() {
     }*/
     else if (operatingSystem == 2 && operatingSystemArch == 1) {
         if (moduleMemorySize == 9293824) gameVersion = 201; //2.3
+        else if (moduleMemorySize == 12009472) gameVersion = 202; //2.4
         else {
             cleanup();
             return false;
@@ -321,6 +352,7 @@ bool set_process() {
         //There needs to be some way we can version check something without requiring a M1 Mac to run the program to get a module size
         if (moduleMemorySize == 178798592) gameVersion = 301; //2.0
         else if (moduleMemorySize == 178864128) gameVersion = 302; //2.3
+        else if (moduleMemorySize == 1) gameVersion = 303; //2.4 TODO
         else {
             cleanup();
             return false;
@@ -329,6 +361,7 @@ bool set_process() {
     else if (operatingSystem == 3 && operatingSystemArch == 1) {
         if (moduleMemorySize == 179740672) gameVersion = 401; //2.0
         else if (moduleMemorySize == 179814400) gameVersion = 402; //2.3
+        else if (moduleMemorySize == 31444992) gameVersion = 403; //2.4
         else {
             cleanup();
             return false;
@@ -358,16 +391,28 @@ void update_gamestate() {
     if (!process_read(process, gameModule + gameAddresses->level, &current->level, sizeof(current->level))) return;
     if (!process_read(process, gameModule + gameAddresses->gameState, &current->gameState, sizeof(current->gameState))) return;
     if (operatingSystem == 1) {
-        Address tutorialComplete = 0;
-        if (!process_read(process, gameModule + gameAddresses->tutorialComplete, &tutorialComplete, sizeof(tutorialComplete))) return;
-        if (!process_read(process, tutorialComplete + 0x70C4, &current->tutorialComplete, sizeof(current->tutorialComplete))) return;
-        if (!process_read(process, gameModule + gameAddresses->inSpecialStage, &current->inSpecialStage, sizeof(current->inSpecialStage))) return;
+        if (gameAddresses->tutorialComplete != 0x0) {
+            Address tutorialComplete = 0;
+            if (!process_read(process, gameModule + gameAddresses->tutorialComplete, &tutorialComplete, sizeof(tutorialComplete))) return;
+            if (!process_read(process, tutorialComplete + 0x70C4, &current->tutorialComplete, sizeof(current->tutorialComplete))) return;
+        }
+        else current->tutorialComplete = 0;
+        if (gameAddresses->inSpecialStage != 0x0) {
+            if (!process_read(process, gameModule + gameAddresses->inSpecialStage, &current->inSpecialStage, sizeof(current->inSpecialStage))) return;
+        }
+        else current->inSpecialStage = 0;
     }
     else if (operatingSystem == 2 || operatingSystem == 3) {
-        Address tutorialComplete = 0;
-        if (!process_read(process, gameModule + gameAddresses->tutorialComplete, &tutorialComplete, sizeof(tutorialComplete))) return;
-        if (!process_read(process, tutorialComplete + 0x70F8, &current->tutorialComplete, sizeof(current->tutorialComplete))) return;
-        if (!process_read(process, gameModule + gameAddresses->inSpecialStage, &current->inSpecialStage, sizeof(current->inSpecialStage))) return;
+        if (gameAddresses->tutorialComplete != 0x0) {
+            Address tutorialComplete = 0;
+            if (!process_read(process, gameModule + gameAddresses->tutorialComplete, &tutorialComplete, sizeof(tutorialComplete))) return;
+            if (!process_read(process, tutorialComplete + 0x70F8, &current->tutorialComplete, sizeof(current->tutorialComplete))) return;
+        }
+        else current->tutorialComplete = 0;
+        if (gameAddresses->inSpecialStage != 0x0) {
+            if (!process_read(process, gameModule + gameAddresses->inSpecialStage, &current->inSpecialStage, sizeof(current->inSpecialStage))) return;
+        }
+        else current->inSpecialStage = 0;
     }
 }
 
@@ -375,7 +420,7 @@ void check_start() {
     totalIGT = 0;
     inCredits = false;
     //Start for NG runs
-    if (gameVersion == 5) { //2.4 NG run autostart support
+    if (gameVersion == 5 || gameVersion == 202 || gameVersion == 303 || gameVersion == 403) { //2.4 NG run autostart support
         if (autostartAnyPercentEmerald && old->gameState == 10 && old->level == 232 && current->level != 232) timer_start();
     }
     else {
