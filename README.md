@@ -9,6 +9,7 @@ This WASM autosplitter currently supports the following systems and game version
 - 2.4
 - 2.3
 ## Mac ARM
+- 2.4
 - 2.3
 - 2.0
 ## Mac x86

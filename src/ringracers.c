@@ -352,7 +352,7 @@ bool set_process() {
         //There needs to be some way we can version check something without requiring a M1 Mac to run the program to get a module size
         if (moduleMemorySize == 178798592) gameVersion = 301; //2.0
         else if (moduleMemorySize == 178864128) gameVersion = 302; //2.3
-        else if (moduleMemorySize == 1) gameVersion = 303; //2.4 TODO
+        else if (moduleMemorySize == 30703616) gameVersion = 303; //2.4
         else {
             cleanup();
             return false;
