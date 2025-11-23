@@ -419,75 +419,135 @@ void update_gamestate() {
 void check_start() {
     totalIGT = 0;
     inCredits = false;
-    //Start for NG runs
-    if (gameVersion == 5 || gameVersion == 202 || gameVersion == 303 || gameVersion == 403) { //2.4 NG run autostart support
+    if (gameVersion == 5 || gameVersion == 202 || gameVersion == 303 || gameVersion == 403) {
+        //Start for NG runs
         if (autostartAnyPercentEmerald && old->gameState == 10 && old->level == 232 && current->level != 232) timer_start();
+        //Start for All Cups/Ring Cup
+        else if (autostartRingCup && old->level != 5 && current->gameState == 1 && current->level == 5) timer_start();
+        //Start for Sneaker Cup
+        else if (autostartSneakerCup && old->level != 10 && current->gameState == 1 && current->level == 10) timer_start();
+        //Start for Spring Cup
+        else if (autostartSpringCup && old->level != 15 && current->gameState == 1 && current->level == 15) timer_start();
+        //Start for Barrier Cup
+        else if (autostartBarrierCup && old->level != 20 && current->gameState == 1 && current->level == 20) timer_start();
+        //Start for Invincible Cup
+        else if (autostartInvincibleCup && old->level != 25 && current->gameState == 1 && current->level == 25) timer_start();
+        //Start for Emerald Cup
+        else if (autostartEmeraldCup && old->level != 30 && current->gameState == 1 && current->level == 30) timer_start();
+        //Start for Extra Cup
+        else if (autostartExtraCup && old->level != 36 && current->gameState == 1 && current->level == 36) timer_start();
+        //Start for S.P.B Cup
+        else if (autostartSPBCup && old->level != 41 && current->gameState == 1 && current->level == 41) timer_start();
+        //Start for Rocket Cup
+        else if (autostartRocketCup && old->level != 46 && current->gameState == 1 && current->level == 46) timer_start();
+        //Start for Aqua Cup
+        else if (autostartAquaCup && old->level != 51 && current->gameState == 1 && current->level == 51) timer_start();
+        //Start for Lightning Cup
+        else if (autostartLightningCup && old->level != 56 && current->gameState == 1 && current->level == 56) timer_start();
+        //Start for Flame Cup
+        else if (autostartFlameCup && old->level != 61 && current->gameState == 1 && current->level == 61) timer_start();
+        //Start for Super Cup
+        else if (autostartSuperCup && old->level != 66 && current->gameState == 1 && current->level == 66) timer_start();
+        //Start for Egg Cup
+        else if (autostartEggCup && old->level != 72 && current->gameState == 1 && current->level == 72) timer_start();
+        //Start for Goggles Cup
+        else if (autostartGogglesCup && old->level != 76 && current->gameState == 1 && current->level == 76) timer_start();
+        //Start for Timer Cup
+        else if (autostartTimerCup && old->level != 81 && current->gameState == 1 && current->level == 81) timer_start();
+        //Start for Grow Cup
+        else if (autostartGrowCup && old->level != 86 && current->gameState == 1 && current->level == 86) timer_start();
+        //Start for Chao Cup
+        else if (autostartChaoCup && old->level != 91 && current->gameState == 1 && current->level == 91) timer_start();
+        //Start for Wing Cup
+        else if (autostartWingCup && old->level != 96 && current->gameState == 1 && current->level == 96) timer_start();
+        //Start for Mega Cup
+        else if (autostartMegaCup && old->level != 101 && current->gameState == 1 && current->level == 101) timer_start();
+        //Start for Phantom Cup
+        else if (autostartPhantomCup && old->level != 108 && current->gameState == 1 && current->level == 108) timer_start();
+        //Start for Flash Cup
+        else if (autostartFlashCup && old->level != 111 && current->gameState == 1 && current->level == 111) timer_start();
+        //Start for Swap Cup
+        else if (autostartSwapCup && old->level != 116 && current->gameState == 1 && current->level == 116) timer_start();
+        //Start for Shrink Cup
+        else if (autostartShrinkCup && old->level != 121 && current->gameState == 1 && current->level == 121) timer_start();
+        //Start for Bomb Cup
+        else if (autostartBombCup && old->level != 126 && current->gameState == 1 && current->level == 126) timer_start();
+        //Start for Power Cup
+        else if (autostartPowerCup && old->level != 131 && current->gameState == 1 && current->level == 131) timer_start();
+        //Start for Genesis Cup
+        else if (autostartGenesisCup && old->level != 136 && current->gameState == 1 && current->level == 136) timer_start();
+        //Start for Skate Cup
+        else if (autostartSkateCup && old->level != 141 && current->gameState == 1 && current->level == 141) timer_start();
+        //Start for Recycle Cup A
+        else if (autostartRecycleCupA && old->level != 146 && current->gameState == 1 && current->level == 146) timer_start();
+        //Start for Recycle Cup B
+        else if (autostartRecycleCupB && old->level != 151 && current->gameState == 1 && current->level == 151) timer_start();
     }
     else {
         if (autostartAnyPercentEmerald && old->gameState == 6 && !old->tutorialComplete && current->tutorialComplete) timer_start();
+        //Start for Beat The Tutorial
+        else if (autostartTutorial && old->level != 230 && current->gameState == 1 && current->level == 230) timer_start();
+        //Start for All Cups/Ring Cup
+        else if (autostartRingCup && old->level != 5 && current->gameState == 1 && current->level == 5) timer_start();
+        //Start for Sneaker Cup
+        else if (autostartSneakerCup && old->level != 10 && current->gameState == 1 && current->level == 10) timer_start();
+        //Start for Spring Cup
+        else if (autostartSpringCup && old->level != 15 && current->gameState == 1 && current->level == 15) timer_start();
+        //Start for Barrier Cup
+        else if (autostartBarrierCup && old->level != 20 && current->gameState == 1 && current->level == 20) timer_start();
+        //Start for Invincible Cup
+        else if (autostartInvincibleCup && old->level != 25 && current->gameState == 1 && current->level == 25) timer_start();
+        //Start for Emerald Cup
+        else if (autostartEmeraldCup && old->level != 30 && current->gameState == 1 && current->level == 30) timer_start();
+        //Start for Extra Cup
+        else if (autostartExtraCup && old->level != 36 && current->gameState == 1 && current->level == 36) timer_start();
+        //Start for S.P.B Cup
+        else if (autostartSPBCup && old->level != 41 && current->gameState == 1 && current->level == 41) timer_start();
+        //Start for Rocket Cup
+        else if (autostartRocketCup && old->level != 46 && current->gameState == 1 && current->level == 46) timer_start();
+        //Start for Aqua Cup
+        else if (autostartAquaCup && old->level != 51 && current->gameState == 1 && current->level == 51) timer_start();
+        //Start for Lightning Cup
+        else if (autostartLightningCup && old->level != 56 && current->gameState == 1 && current->level == 56) timer_start();
+        //Start for Flame Cup
+        else if (autostartFlameCup && old->level != 61 && current->gameState == 1 && current->level == 61) timer_start();
+        //Start for Super Cup
+        else if (autostartSuperCup && old->level != 66 && current->gameState == 1 && current->level == 66) timer_start();
+        //Start for Egg Cup
+        else if (autostartEggCup && old->level != 71 && current->gameState == 1 && current->level == 71) timer_start();
+        //Start for Goggles Cup
+        else if (autostartGogglesCup && old->level != 75 && current->gameState == 1 && current->level == 75) timer_start();
+        //Start for Timer Cup
+        else if (autostartTimerCup && old->level != 80 && current->gameState == 1 && current->level == 80) timer_start();
+        //Start for Grow Cup
+        else if (autostartGrowCup && old->level != 85 && current->gameState == 1 && current->level == 85) timer_start();
+        //Start for Chao Cup
+        else if (autostartChaoCup && old->level != 90 && current->gameState == 1 && current->level == 90) timer_start();
+        //Start for Wing Cup
+        else if (autostartWingCup && old->level != 95 && current->gameState == 1 && current->level == 95) timer_start();
+        //Start for Mega Cup
+        else if (autostartMegaCup && old->level != 100 && current->gameState == 1 && current->level == 100) timer_start();
+        //Start for Phantom Cup
+        else if (autostartPhantomCup && old->level != 107 && current->gameState == 1 && current->level == 107) timer_start();
+        //Start for Flash Cup
+        else if (autostartFlashCup && old->level != 110 && current->gameState == 1 && current->level == 110) timer_start();
+        //Start for Swap Cup
+        else if (autostartSwapCup && old->level != 115 && current->gameState == 1 && current->level == 115) timer_start();
+        //Start for Shrink Cup
+        else if (autostartShrinkCup && old->level != 120 && current->gameState == 1 && current->level == 120) timer_start();
+        //Start for Bomb Cup
+        else if (autostartBombCup && old->level != 125 && current->gameState == 1 && current->level == 125) timer_start();
+        //Start for Power Cup
+        else if (autostartPowerCup && old->level != 130 && current->gameState == 1 && current->level == 130) timer_start();
+        //Start for Genesis Cup
+        else if (autostartGenesisCup && old->level != 135 && current->gameState == 1 && current->level == 135) timer_start();
+        //Start for Skate Cup
+        else if (autostartSkateCup && old->level != 140 && current->gameState == 1 && current->level == 140) timer_start();
+        //Start for Recycle Cup A
+        else if (autostartRecycleCupA && old->level != 145 && current->gameState == 1 && current->level == 145) timer_start();
+        //Start for Recycle Cup B
+        else if (autostartRecycleCupB && old->level != 150 && current->gameState == 1 && current->level == 150) timer_start();
     }
-    //Start for Beat The Tutorial
-    if (autostartTutorial && old->level != 230 && current->gameState == 1 && current->level == 230) timer_start();
-    //Start for All Cups/Ring Cup
-    else if (autostartRingCup && old->level != 5 && current->gameState == 1 && current->level == 5) timer_start();
-    //Start for Sneaker Cup
-    else if (autostartSneakerCup && old->level != 10 && current->gameState == 1 && current->level == 10) timer_start();
-    //Start for Spring Cup
-    else if (autostartSpringCup && old->level != 15 && current->gameState == 1 && current->level == 15) timer_start();
-    //Start for Barrier Cup
-    else if (autostartBarrierCup && old->level != 20 && current->gameState == 1 && current->level == 20) timer_start();
-    //Start for Invincible Cup
-    else if (autostartInvincibleCup && old->level != 25 && current->gameState == 1 && current->level == 25) timer_start();
-    //Start for Emerald Cup
-    else if (autostartEmeraldCup && old->level != 30 && current->gameState == 1 && current->level == 30) timer_start();
-    //Start for Extra Cup
-    else if (autostartExtraCup && old->level != 36 && current->gameState == 1 && current->level == 36) timer_start();
-    //Start for S.P.B Cup
-    else if (autostartSPBCup && old->level != 41 && current->gameState == 1 && current->level == 41) timer_start();
-    //Start for Rocket Cup
-    else if (autostartRocketCup && old->level != 46 && current->gameState == 1 && current->level == 46) timer_start();
-    //Start for Aqua Cup
-    else if (autostartAquaCup && old->level != 51 && current->gameState == 1 && current->level == 51) timer_start();
-    //Start for Lightning Cup
-    else if (autostartLightningCup && old->level != 56 && current->gameState == 1 && current->level == 56) timer_start();
-    //Start for Flame Cup
-    else if (autostartFlameCup && old->level != 61 && current->gameState == 1 && current->level == 61) timer_start();
-    //Start for Super Cup
-    else if (autostartSuperCup && old->level != 66 && current->gameState == 1 && current->level == 66) timer_start();
-    //Start for Egg Cup
-    else if (autostartEggCup && old->level != 71 && current->gameState == 1 && current->level == 71) timer_start();
-    //Start for Goggles Cup
-    else if (autostartGogglesCup && old->level != 75 && current->gameState == 1 && current->level == 75) timer_start();
-    //Start for Timer Cup
-    else if (autostartTimerCup && old->level != 80 && current->gameState == 1 && current->level == 80) timer_start();
-    //Start for Grow Cup
-    else if (autostartGrowCup && old->level != 85 && current->gameState == 1 && current->level == 85) timer_start();
-    //Start for Chao Cup
-    else if (autostartChaoCup && old->level != 90 && current->gameState == 1 && current->level == 90) timer_start();
-    //Start for Wing Cup
-    else if (autostartWingCup && old->level != 95 && current->gameState == 1 && current->level == 95) timer_start();
-    //Start for Mega Cup
-    else if (autostartMegaCup && old->level != 100 && current->gameState == 1 && current->level == 100) timer_start();
-    //Start for Phantom Cup
-    else if (autostartPhantomCup && old->level != 107 && current->gameState == 1 && current->level == 107) timer_start();
-    //Start for Flash Cup
-    else if (autostartFlashCup && old->level != 110 && current->gameState == 1 && current->level == 110) timer_start();
-    //Start for Swap Cup
-    else if (autostartSwapCup && old->level != 115 && current->gameState == 1 && current->level == 115) timer_start();
-    //Start for Shrink Cup
-    else if (autostartShrinkCup && old->level != 120 && current->gameState == 1 && current->level == 120) timer_start();
-    //Start for Bomb Cup
-    else if (autostartBombCup && old->level != 125 && current->gameState == 1 && current->level == 125) timer_start();
-    //Start for Power Cup
-    else if (autostartPowerCup && old->level != 130 && current->gameState == 1 && current->level == 130) timer_start();
-    //Start for Genesis Cup
-    else if (autostartGenesisCup && old->level != 135 && current->gameState == 1 && current->level == 135) timer_start();
-    //Start for Skate Cup
-    else if (autostartSkateCup && old->level != 140 && current->gameState == 1 && current->level == 140) timer_start();
-    //Start for Recycle Cup A
-    else if (autostartRecycleCupA && old->level != 145 && current->gameState == 1 && current->level == 145) timer_start();
-    //Start for Recycle Cup B
-    else if (autostartRecycleCupB && old->level != 150 && current->gameState == 1 && current->level == 150) timer_start();
 }
 
 void check_update() {
