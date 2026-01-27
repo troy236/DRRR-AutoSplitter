@@ -35,6 +35,7 @@ GameState* current = 0;
 
 uint32_t totalIGT = 0;
 bool inCredits = false;
+bool is2_4OrNewer = false;
 
 bool settingsInitialized = false;
 bool autostartAnyPercentEmerald = true;
@@ -42,6 +43,7 @@ bool autostartTutorial = true;
 bool splitEndTrack = true;
 bool splitEndPrison = true;
 bool splitEndEmerald = true;
+bool splitEndTutorial = true;
 bool splitCredits = true;
 bool splitEndChaosEmeraldRun = true;
 bool splitEndSuperEmeraldRun = true;
@@ -116,6 +118,7 @@ void setup() {
     current = malloc(sizeof(GameState));
     //Windows
     if (gameVersion == 1) { //2.0
+        is2_4OrNewer = false;
         gameAddresses->trackTics = 0x1088434;
         gameAddresses->lap = 0x1088444;
         gameAddresses->prisonLap = 0x1088445;
@@ -126,6 +129,7 @@ void setup() {
         gameAddresses->inSpecialStage = 0x5C69BA0;
     }
     else if (gameVersion == 2) { //2.1
+        is2_4OrNewer = false;
         gameAddresses->trackTics = 0x108A434;
         gameAddresses->lap = 0x108A434;
         gameAddresses->prisonLap = 0x108A445;
@@ -136,6 +140,7 @@ void setup() {
         gameAddresses->inSpecialStage = 0x5C6BBA0;
     }
     else if (gameVersion == 3) { //2.2
+        is2_4OrNewer = false;
         gameAddresses->trackTics = 0x10FA47C;
         gameAddresses->lap = 0x10FA48C;
         gameAddresses->prisonLap = 0x10FA48D;
@@ -146,6 +151,7 @@ void setup() {
         gameAddresses->inSpecialStage = 0x5CDDEE0;
     }
     else if (gameVersion == 4) { //2.3
+        is2_4OrNewer = false;
         gameAddresses->trackTics = 0x115647C;
         gameAddresses->lap = 0x115648C;
         gameAddresses->prisonLap = 0x115648D;
@@ -156,6 +162,7 @@ void setup() {
         gameAddresses->inSpecialStage = 0x5D39F20;
     }
     else if (gameVersion == 5) { //2.4
+        is2_4OrNewer = true;
         gameAddresses->trackTics = 0x14608F0;
         gameAddresses->lap = 0x1460900;
         gameAddresses->prisonLap = 0x1460901;
@@ -171,6 +178,7 @@ void setup() {
     }*/
     //Linux x86
     else if (gameVersion == 201) { //2.3
+        is2_4OrNewer = false;
         gameAddresses->trackTics = 0x99A968;
         gameAddresses->lap = 0x99A978;
         gameAddresses->prisonLap = 0x99A979;
@@ -181,6 +189,7 @@ void setup() {
         gameAddresses->inSpecialStage = 0x0;
     }
     else if (gameVersion == 202) { //2.4
+        is2_4OrNewer = true;
         gameAddresses->trackTics = 0xC85258;
         gameAddresses->lap = 0xC85268;
         gameAddresses->prisonLap = 0xC85269;
@@ -192,6 +201,7 @@ void setup() {
     }
     //Mac ARM
     else if (gameVersion == 301) { //2.0
+        is2_4OrNewer = false;
         gameAddresses->trackTics = 0xBC75CC;
         gameAddresses->lap = 0xBC75DC;
         gameAddresses->prisonLap = 0xBC75DD;
@@ -202,6 +212,7 @@ void setup() {
         gameAddresses->inSpecialStage = 0x650BF80;
     }
     else if (gameVersion == 302) { //2.3
+        is2_4OrNewer = false;
         gameAddresses->trackTics = 0xBD7DD8;
         gameAddresses->lap = 0xBD7DE8;
         gameAddresses->prisonLap = 0xBD7DE9;
@@ -212,6 +223,7 @@ void setup() {
         gameAddresses->inSpecialStage = 0x651ED28;
     }
     else if (gameVersion == 303) { //2.4
+        is2_4OrNewer = true;
         gameAddresses->trackTics = 0x1549BD8;
         gameAddresses->lap = 0x1549BE8;
         gameAddresses->prisonLap = 0x1549BE9;
@@ -223,6 +235,7 @@ void setup() {
     }
     //Mac x86
     else if (gameVersion == 401) { //2.0
+        is2_4OrNewer = false;
         gameAddresses->trackTics = 0xCC110C;
         gameAddresses->lap = 0xCC111C;
         gameAddresses->prisonLap = 0xCC111D;
@@ -233,6 +246,7 @@ void setup() {
         gameAddresses->inSpecialStage = 0x6605C38;
     }
     else if (gameVersion == 402) { //2.3
+        is2_4OrNewer = false;
         gameAddresses->trackTics = 0xCCD93C;
         gameAddresses->lap = 0xCCD94C;
         gameAddresses->prisonLap = 0xCCD94D;
@@ -243,6 +257,7 @@ void setup() {
         gameAddresses->inSpecialStage = 0x66149F8;
     }
     else if (gameVersion == 403) { //2.4
+        is2_4OrNewer = true;
         gameAddresses->trackTics = 0x161E638;
         gameAddresses->lap = 0x161E648;
         gameAddresses->prisonLap = 0x161E649;
@@ -419,7 +434,7 @@ void update_gamestate() {
 void check_start() {
     totalIGT = 0;
     inCredits = false;
-    if (gameVersion == 5 || gameVersion == 202 || gameVersion == 303 || gameVersion == 403) {
+    if (is2_4OrNewer) {
         //Start for NG runs
         if (autostartAnyPercentEmerald && old->gameState == 10 && old->level == 232 && current->level != 232) timer_start();
         //Start for All Cups/Ring Cup
@@ -571,18 +586,32 @@ bool check_split() {
 	
     //Split on Race/Special stage complete
     if (old->lap > old->totalLaps && current->level != old->level) {
-        if (old->level == 221) return splitEndChaosEmeraldRun || splitEndEmerald;
-        if (old->level == 228) return splitEndSuperEmeraldRun || splitEndEmerald;
-        if (old->level >= 215 && old->level <= 228) return splitEndEmerald;
+        if (is2_4OrNewer) {
+            if (old->level == 223) return splitEndChaosEmeraldRun || splitEndEmerald;
+            if (old->level == 230) return splitEndSuperEmeraldRun || splitEndEmerald;
+            if (old->level >= 217 && old->level <= 230) return splitEndEmerald;
+        }
+        else {
+            if (old->level == 221) return splitEndChaosEmeraldRun || splitEndEmerald;
+            if (old->level == 228) return splitEndSuperEmeraldRun || splitEndEmerald;
+            if (old->level >= 215 && old->level <= 228) return splitEndEmerald;
+        }
         return splitEndTrack;
     }
     //Split on Prison stage complete
     if (old->prisonLap == 1 && old->lap == 0 && current->level != old->level) return splitEndPrison;
     //Split on Tutorial stage complete
-    if (old->level >= 230 && old->level <= 234 && current->gameState == 1 && current->level != old->level) return true;
-    //Split on Springs Tutorial stage to menu
-    //This would also split quitting to menu from Springs
-    if (old->level == 234 && old->gameState == 1 && current->gameState == 6) return true;
+    if (is2_4OrNewer) {
+        if (old->level == 235 && old->gameState == 1 && current->gameState == 6) return splitEndTutorial;
+        if (old->level == 236 && old->gameState == 1 && current->gameState == 6) return splitEndTutorial;
+    }
+    else {
+        if (old->level >= 230 && old->level <= 234 && current->gameState == 1 && current->level != old->level) return splitEndTutorial;
+        //Split on Springs Tutorial stage to menu
+        //This would also split quitting to menu from Springs
+        if (old->level == 234 && old->gameState == 1 && current->gameState == 6) return splitEndTutorial;
+    }
+    if (old->level >= 233 && old->level <= 234 && current->gameState == 1 && current->level != old->level) return true;
     if (!inCredits && old->gameState != 7 && current->gameState == 7) {
         //Avoids multiple splits at Credits due to demo footage changing gameState
         inCredits = true;
@@ -598,6 +627,7 @@ void set_settings() {
         splitEndTrack = user_settings_add_bool_helper("split_end_track", "Split: On completed tracks", true);
         splitEndPrison = user_settings_add_bool_helper("split_end_prison", "Split: On completed Prisons", false);
         splitEndEmerald = user_settings_add_bool_helper("split_end_emerald", "Split: On completed Sealed Stars", true);
+        splitEndTutorial = user_settings_add_bool_helper("split_end_tutorial", "Split: On Tutorial stage completed", true);
         splitCredits = user_settings_add_bool_helper("split_credits", "Split: Credits/End of Any%", true);
         splitEndChaosEmeraldRun = user_settings_add_bool_helper("split_end_chaos_emerald_run", "Split: End of All Chaos Emeralds", true);
         splitEndSuperEmeraldRun = user_settings_add_bool_helper("split_end_super_emerald_run", "Split: End of All Super Emeralds", true);
@@ -642,6 +672,7 @@ void set_settings() {
     uint64_t splitEndTrackSettingValue = settings_map_get_helper(settingsMap, "split_end_track");
     uint64_t splitEndPrisonSettingValue = settings_map_get_helper(settingsMap, "split_end_prison");
     uint64_t splitEndEmeraldSettingValue = settings_map_get_helper(settingsMap, "split_end_emerald");
+    uint64_t splitEndTutorialSettingValue = settings_map_get_helper(settingsMap, "split_end_tutorial");
     uint64_t creditsSettingValue = settings_map_get_helper(settingsMap, "split_credits");
     uint64_t splitEndChaosEmeraldRunSettingValue = settings_map_get_helper(settingsMap, "split_end_chaos_emerald_run");
     uint64_t splitEndSuperEmeraldRunSettingValue = settings_map_get_helper(settingsMap, "split_end_super_emerald_run");
@@ -694,6 +725,10 @@ void set_settings() {
     if (splitEndEmeraldSettingValue != 0) {
         setting_value_get_bool(splitEndEmeraldSettingValue, &splitEndEmerald);
         setting_value_free(splitEndEmeraldSettingValue);
+    }
+    if (splitEndTutorialSettingValue != 0) {
+        setting_value_get_bool(splitEndTutorialSettingValue, &splitEndTutorial);
+        setting_value_free(splitEndTutorialSettingValue);
     }
     if (creditsSettingValue != 0) {
         setting_value_get_bool(creditsSettingValue, &splitCredits);
