@@ -602,8 +602,8 @@ bool check_split() {
     if (old->prisonLap == 1 && old->lap == 0 && current->level != old->level) return splitEndPrison;
     //Split on Tutorial stage complete
     if (is2_4OrNewer) {
-        if (old->level == 235 && old->gameState == 1 && current->gameState == 6) return splitEndTutorial;
-        if (old->level == 236 && old->gameState == 1 && current->gameState == 6) return splitEndTutorial;
+        if (old->level == 235 && current->level != 235 && old->gameState == 1 && current->gameState != 1) return splitEndTutorial;
+        if (old->level == 236 && current->level != 236 && old->gameState == 1 && current->gameState != 1) return splitEndTutorial;
     }
     else {
         if (old->level >= 230 && old->level <= 234 && current->gameState == 1 && current->level != old->level) return splitEndTutorial;
