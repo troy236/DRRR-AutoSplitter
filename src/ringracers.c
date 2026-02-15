@@ -627,7 +627,7 @@ void set_settings() {
         splitEndTrack = user_settings_add_bool_helper("split_end_track", "Split: On completed tracks", true);
         splitEndPrison = user_settings_add_bool_helper("split_end_prison", "Split: On completed Prisons", false);
         splitEndEmerald = user_settings_add_bool_helper("split_end_emerald", "Split: On completed Sealed Stars", true);
-        splitEndTutorial = user_settings_add_bool_helper("split_end_tutorial", "Split: On Tutorial stage completed", true);
+        splitEndTutorial = user_settings_add_bool_helper("split_end_tutorial", "Split: On completed Tutorial stage", true);
         splitCredits = user_settings_add_bool_helper("split_credits", "Split: Credits/End of Any%", true);
         splitEndChaosEmeraldRun = user_settings_add_bool_helper("split_end_chaos_emerald_run", "Split: End of All Chaos Emeralds", true);
         splitEndSuperEmeraldRun = user_settings_add_bool_helper("split_end_super_emerald_run", "Split: End of All Super Emeralds", true);
@@ -666,7 +666,10 @@ void set_settings() {
     }
     uint64_t settingsMap = settings_map_load();
     uint64_t mapLength = settings_map_len(settingsMap);
-    if (mapLength == 0) return;
+    if (mapLength == 0) {
+        settings_map_free(settingsMap);
+        return;
+	}
     uint64_t autostartAnyPercentEmeraldSettingValue = settings_map_get_helper(settingsMap, "autostart_any_percent_emerald");
     uint64_t autostartTutorialSettingValue = settings_map_get_helper(settingsMap, "autostart_tutorial");
     uint64_t splitEndTrackSettingValue = settings_map_get_helper(settingsMap, "split_end_track");
